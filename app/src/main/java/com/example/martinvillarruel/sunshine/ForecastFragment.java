@@ -1,9 +1,13 @@
 package com.example.martinvillarruel.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,10 +49,14 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        FetchWeatherTask weatherTask = new FetchWeatherTask();
-        weatherTask.execute("94043");
         setHasOptionsMenu(true);
     }
 
@@ -61,8 +69,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("94043");
+            updateWeather();
             return true;
         }
 
@@ -99,6 +106,14 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = preferences.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
+
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
@@ -118,6 +133,16 @@ public class ForecastFragment extends Fragment {
          */
         private String formatHighLows(double high, double low) {
             // For presentation, assume the user doesn't care about tenths of a degree.
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String unitType = sharedPreferences.getString(getString(R.string.pref_temp_key), getString(R.string.pref_temp_celsius));
+
+            if(unitType.equals(getString(R.string.pref_temp_fahrenheit))){
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            } else if(!unitType.equals(getString(R.string.pref_temp_celsius))) {
+                Log.d(LOG_TAG, "Unit type not found: " + unitType);
+            }
+
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
 
@@ -197,8 +222,10 @@ public class ForecastFragment extends Fragment {
 
             String forecastJsonStr = null;
 
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String units = sharedPreferences.getString(getString(R.string.pref_temp_key), "metric");
+
             String format = "json";
-            String units = "metric";
             int numDays = 7;
 
             String[] weatherData = new String[0];
@@ -298,6 +325,4 @@ public class ForecastFragment extends Fragment {
             }
         }
     }
-
 }
-

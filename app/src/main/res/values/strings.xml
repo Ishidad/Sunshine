@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Sunshine</string>
+
+    <!-- Menu items -->
     <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
+    <string name="action_map">Location</string>
+    <string name="action_share">Share</string>
+
+    <!-- Fragments & Activities -->
     <string name="title_activity_detail">DetailActivity</string>
     <string name="detail_forecast">DetailForecast</string>
 
@@ -10,9 +16,22 @@
 
     <!-- Steings Strings -->
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="pref_zipcode_label">Postal Code</string>
+    <string name="pref_zipcode_key">postalcode</string>
+    <string name="pref_zipcode_default">94043</string>
+    <string name="pref_temp_label">Temperature</string>
+    <string name="pref_temp_key">temperature</string>
+    <string-array name="tempArray">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </string-array>
+    <string-array name="tempValues">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+    <string name="pref_temp_celsius">metric</string>
+    <string name="pref_temp_fahrenheit">imperial</string>
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key">location</string>
     <string name="pref_location_default">94043</string>
-    <string name="pref_temp_display">Degrees</string>
-    <string name="pref_temp_default">Degrees</string>
 </resources>
