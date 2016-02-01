@@ -3,7 +3,8 @@ package com.example.martinvillarruel.sunshine;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,13 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
-
-/**
- * A placeholder fragment containing a simple view.
- */
 public class DetailActivityFragment extends Fragment {
 
     private static final String LOG_DATA = DetailActivityFragment.class.getSimpleName();
@@ -48,20 +44,18 @@ public class DetailActivityFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        menu.clear();
         inflater.inflate(R.menu.detailfragment, menu);
 
-        /*
         MenuItem share = menu.findItem(R.id.action_share);
-        ShareActionProvider shareActionProvider = (ShareActionProvider) share.getActionProvider();
+        ShareActionProvider shareActionProvider =
+                (ShareActionProvider) MenuItemCompat.getActionProvider(share);
 
-        // Attach an intent to this ShareActionProvider.  You can update this at any time,
-        // like when the user selects a new piece of data they might like to share.
         if (shareActionProvider != null ) {
             shareActionProvider.setShareIntent(createShareForecastIntent());
         } else {
             Log.d(LOG_DATA, "Share Action Provider is null?");
-        }*/
+        }
     }
 
     private Intent createShareForecastIntent(){
